@@ -19,6 +19,9 @@
   --modal-bg: #030303;
   --overlay: rgba(3, 3, 3, 0.8);
   --ctl: 34px;
+  --card-w: 86px;      /* pevná šířka karty (obrázek = šířka − 24 px) */
+  --col-gap: 40px;     /* minimální mezera mezi sloupci; zbytek místa se rozdělí rovnoměrně */
+  --row-gap: 40px;
   color-scheme: dark;
 }
 :root[data-theme="light"] {
@@ -213,8 +216,10 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 /* ---------- Grid + cards ---------- */
 .grid {
   display: grid;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fill, var(--card-w));
+  justify-content: space-between;
+  column-gap: var(--col-gap);
+  row-gap: var(--row-gap);
 }
 .card {
   display: flex;
@@ -238,7 +243,8 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 .card img {
   display: block;
   width: 100%;
-  aspect-ratio: 1;
+  height: auto;        /* přebíjí atribut height z HTML, aby šel poměr stran 1:1 */
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 16px;
   background: var(--surface);
@@ -346,11 +352,9 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 .store:hover { opacity: .7; }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 1099px) { .grid { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 32px; } }
-@media (max-width: 899px)  { .grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px; } }
 
 @media (max-width: 719px) {
-  :root { --ctl-m: 38px; }
+  :root { --ctl-m: 38px; --card-w: 75px; --col-gap: 12px; --row-gap: 24px; }
   .mobile-filters { display: flex; }
   .mobile-filters:empty { display: none; }
   .mobile-filters .search { width: 100%; }
@@ -361,11 +365,9 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   .mobile-filters .dd--category { width: 100%; }
   .mobile-filters .dd--category .dd-list { left: 0; right: 0; }
   .toolbar { margin-bottom: 32px; }
-  .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
   .modal { padding: 32px 24px; }
   .modal-img { width: min(240px, 100%); height: auto; aspect-ratio: 1; }
 }
-@media (max-width: 400px) { .grid { gap: 16px; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; }
