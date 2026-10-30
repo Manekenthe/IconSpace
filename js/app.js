@@ -375,6 +375,7 @@
     tag.innerHTML = icon(CAT_ICON[a.category] || 'grid') + '<span></span>';
     tag.lastChild.textContent = a.category;
     $('mDeveloper').textContent = a.developer || '—';
+    $('mDeveloper').title = a.developer || '';
     $('mDate').textContent = fmtDate(a.date);
 
     var site = $('mWebsite');
@@ -385,6 +386,7 @@
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
       link.textContent = a.website.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+      link.title = link.href;
       site.appendChild(link);
     } else site.textContent = '—';
 
