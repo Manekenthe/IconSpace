@@ -291,6 +291,13 @@
     rendered = end;
   }
 
+  function fillViewport() {
+    if (rendered < view.length && el.sentinel.getBoundingClientRect().top < window.innerHeight + 800) {
+      renderMore();
+      requestAnimationFrame(fillViewport);
+    }
+  }
+
   function update() {
     view = compute();
     el.grid.textContent = '';
@@ -298,12 +305,13 @@
     renderMore();
     el.empty.hidden = view.length > 0;
     updateCount();
+    fillViewport();
     // pokud sentinel zůstal viditelný, IntersectionObserver zavolá dál sám
   }
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) renderMore();
+      if (entries[0].isIntersecting) fillViewport();
     }, { rootMargin: '800px 0px' }).observe(el.sentinel);
   } else {
     window.addEventListener('scroll', function () {
@@ -452,7 +460,7 @@
       if (q) {
         if (c === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else q = false; }
         else field += c;
-      } else if (c === '"') q = true;
+      } else if (c === '"' && field.trim() === '') { field = ''; q = true; }
       else if (c === delim) { row.push(field); field = ''; }
       else if (c === '\n' || c === '\r') {
         if (c === '\r' && text[i + 1] === '\n') i++;
@@ -558,7 +566,12 @@
     fetchText('data/apps.csv'),
     fetchText('data/counts.json').then(JSON.parse).catch(function () { return {}; })
   ]).then(function (res) {
-    start(buildApps(parseCSV(res[0])), res[1]);
+    var rows = parseCSV(res[0]);
+    var apps = buildApps(rows);
+    var nonEmpty = rows.slice(1).filter(function (r) { return r.join('').trim() !== ''; }).length;
+    console.info('IconSpace: načteno ' + apps.length + ' aplikací z ' + nonEmpty + ' řádků CSV.');
+    if (apps.length < nonEmpty) console.warn('IconSpace: ' + (nonEmpty - apps.length) + ' řádků bylo přeskočeno (viz upozornění výše).');
+    start(apps, res[1]);
   }).catch(function (err) {
     console.error(err);
     if (window.DOCKAPP && window.DOCKAPP.apps) { // záloha: starý generovaný soubor
