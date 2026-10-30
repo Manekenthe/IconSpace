@@ -387,6 +387,11 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   .modal-img { width: min(240px, 100%); height: auto; aspect-ratio: 1; }
 }
 
+/* iOS Safari přibližuje stránku při focusu na pole s písmem menším než 16 px */
+@media (pointer: coarse) {
+  .search-input { font-size: 16px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; }
 }
