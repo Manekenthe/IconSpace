@@ -246,6 +246,7 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   height: auto;        /* přebíjí atribut height z HTML, aby šel poměr stran 1:1 */
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  border: 1px solid var(--border);   /* obrys, aby byla vidět i velmi tmavá / světlá ikona */
   border-radius: 16px;
   background: var(--surface);
 }
@@ -318,6 +319,7 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   width: 240px; height: 240px;
   max-width: 100%;
   object-fit: cover;
+  border: 1px solid var(--border);
   border-radius: 56px;
   background: var(--surface);
 }
@@ -388,7 +390,7 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 }
 
 /* iOS Safari přibližuje stránku při focusu na pole s písmem menším než 16 px */
-@media (pointer: coarse) {
+@media (pointer: coarse), (hover: none), (max-width: 1024px) {
   .search-input { font-size: 16px; }
 }
 
