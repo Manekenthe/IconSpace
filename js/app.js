@@ -7,8 +7,8 @@
   var byId = {};
 
   // Kategorie -> ikona (názvy souborů z assets/ui-icons)
-  var CATEGORIES = [
-    ['All categories', 'grid'],
+  // Záloha, kdyby se data/categories.csv nepodařilo načíst. Skutečný seznam je v data/categories.csv.
+  var DEFAULT_CATEGORIES = [
     ['Business', 'briefcase'],
     ['Developer Tools', 'code'],
     ['Education', 'education'],
@@ -30,9 +30,21 @@
     ['Utilities', 'calculator'],
     ['Weather', 'cloud-sun']
   ];
+  var ALL = 'All categories';
+  var CATEGORIES = [];   // [název, ikona]; první položka je vždy „All categories“
   var CAT_ICON = {};
-  CATEGORIES.forEach(function (c) { CAT_ICON[c[0]] = c[1]; });
-  var ALL = CATEGORIES[0][0];
+  var KNOWN_CATS = {};
+
+  function setCategories(list) {
+    CATEGORIES = [[ALL, 'grid']].concat(list);
+    CAT_ICON = {};
+    KNOWN_CATS = {};
+    CATEGORIES.forEach(function (c, i) {
+      CAT_ICON[c[0]] = c[1];
+      if (i > 0) KNOWN_CATS[c[0].toLowerCase()] = c[0];
+    });
+  }
+  setCategories(DEFAULT_CATEGORIES);
 
   var SORTS = [
     ['featured', 'Featured'],
@@ -59,6 +71,12 @@
   };
 
   function icon(name) { return ICONS[name] || ''; }
+
+  // Ikony kategorií se berou přímo ze souborů assets/ui-icons/<název>.svg
+  function catIcon(name) {
+    var url = "url('" + new URL('assets/ui-icons/' + encodeURIComponent(name || 'grid') + '.svg', document.baseURI).href + "')";
+    return '<span class="cat-icon" aria-hidden="true" style="-webkit-mask-image:' + url + ';mask-image:' + url + '"></span>';
+  }
 
   function norm(s) {
     return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -119,7 +137,7 @@
       b.setAttribute('role', 'option');
       b.tabIndex = -1;
       b.dataset.value = it[0];
-      b.innerHTML = (opts.leadingIcon ? icon(it[2]) : '') +
+      b.innerHTML = (opts.leadingIcon ? catIcon(it[2]) : '') +
         '<span></span><span class="check">' + icon('checkmark') + '</span>';
       b.children[opts.leadingIcon ? 1 : 0].textContent = it[1];
       b.addEventListener('click', function () { self.select(it[0]); self.close(true); });
@@ -157,7 +175,7 @@
   Dropdown.prototype.render = function () {
     var self = this;
     var cur = this.opts.items.filter(function (i) { return i[0] === self.value; })[0] || this.opts.items[0];
-    this.trigger.innerHTML = (this.opts.leadingIcon ? icon(cur[2]) : '') +
+    this.trigger.innerHTML = (this.opts.leadingIcon ? catIcon(cur[2]) : '') +
       '<span class="dd-text"></span><span class="chev">' +
       icon(this.isOpen() ? 'chevron-up' : 'chevron-down') + '</span>';
     this.trigger.querySelector('.dd-text').textContent = cur[1];
@@ -217,13 +235,19 @@
     value: state.sort,
     onChange: function (v) { state.sort = v; update(); }
   });
-  var categoryDd = new Dropdown($('categoryDd'), {
-    label: 'Category',
-    leadingIcon: true,
-    items: CATEGORIES.map(function (c) { return [c[0], c[0], c[1]]; }),
-    value: state.category,
-    onChange: function (v) { state.category = v; update(); }
-  });
+  var categoryDd = null;
+  function buildCategoryDd() {
+    var root = $('categoryDd');
+    root.textContent = '';
+    if (state.category !== ALL && !CAT_ICON.hasOwnProperty(state.category)) state.category = ALL;
+    categoryDd = new Dropdown(root, {
+      label: 'Category',
+      leadingIcon: true,
+      items: CATEGORIES.map(function (c) { return [c[0], c[0], c[1]]; }),
+      value: state.category,
+      onChange: function (v) { state.category = v; update(); }
+    });
+  }
 
   /* ---------------- Filter + sort ---------------- */
   function compute() {
@@ -380,7 +404,7 @@
     img.alt = a.title + ' icon';
     $('modalTitle').textContent = a.title;
     var tag = $('modalTag');
-    tag.innerHTML = icon(CAT_ICON[a.category] || 'grid') + '<span></span>';
+    tag.innerHTML = catIcon(CAT_ICON[a.category] || 'grid') + '<span></span>';
     tag.lastChild.textContent = a.category;
     $('mDeveloper').textContent = a.developer || '—';
     $('mDeveloper').title = a.developer || '';
@@ -444,8 +468,6 @@
   });
 
   /* ---------------- Načtení dat z data/apps.csv ---------------- */
-  var KNOWN_CATS = {};
-  CATEGORIES.slice(1).forEach(function (c) { KNOWN_CATS[c[0].toLowerCase()] = c[0]; });
 
   function parseCSV(text) {
     text = text.replace(/^﻿/, '');
@@ -562,18 +584,37 @@
     if ((h === 'ios' || h === 'macos') && h !== state.platform) setPlatform(h, false);
   });
 
+  function buildCategories(text) {
+    var rows = parseCSV(text);
+    var head = (rows[0] || []).map(function (h) { return h.trim().toLowerCase(); });
+    var iName = head.indexOf('name'), iIcon = head.indexOf('icon');
+    var list = [];
+    rows.slice(1).forEach(function (r) {
+      var name = (r[iName] || '').trim();
+      if (name) list.push([name, (r[iIcon] || '').trim() || 'grid']);
+    });
+    return list;
+  }
+
   Promise.all([
     fetchText('data/apps.csv'),
-    fetchText('data/counts.json').then(JSON.parse).catch(function () { return {}; })
+    fetchText('data/counts.json').then(JSON.parse).catch(function () { return {}; }),
+    fetchText('data/categories.csv').then(buildCategories).catch(function (e) {
+      console.warn('IconSpace: data/categories.csv se nepodařilo načíst, používá se výchozí seznam.', e);
+      return null;
+    })
   ]).then(function (res) {
+    if (res[2] && res[2].length) setCategories(res[2]);
+    buildCategoryDd();
     var rows = parseCSV(res[0]);
     var apps = buildApps(rows);
     var nonEmpty = rows.slice(1).filter(function (r) { return r.join('').trim() !== ''; }).length;
-    console.info('IconSpace: načteno ' + apps.length + ' aplikací z ' + nonEmpty + ' řádků CSV.');
+    console.info('IconSpace: načteno ' + apps.length + ' aplikací z ' + nonEmpty + ' řádků CSV a ' + (CATEGORIES.length - 1) + ' kategorií.');
     if (apps.length < nonEmpty) console.warn('IconSpace: ' + (nonEmpty - apps.length) + ' řádků bylo přeskočeno (viz upozornění výše).');
     start(apps, res[1]);
   }).catch(function (err) {
     console.error(err);
+    if (!categoryDd) buildCategoryDd();
     if (window.DOCKAPP && window.DOCKAPP.apps) { // záloha: starý generovaný soubor
       start(window.DOCKAPP.apps.map(function (a, i) { a.idx = i; return a; }), window.DOCKAPP.counts);
     } else {
