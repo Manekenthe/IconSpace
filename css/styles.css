@@ -53,6 +53,14 @@ button, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
 h2, p, dl, dd { margin: 0; }
 svg { width: 16px; height: 16px; flex: none; display: block; }
+/* ikona kategorie ze souboru SVG (maska → barva podle textu, funguje ve světlém i tmavém režimu) */
+.cat-icon {
+  width: 16px; height: 16px; flex: none; display: block;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center; mask-position: center;
+  -webkit-mask-size: contain; mask-size: contain;
+}
 
 .container { width: min(1220px, 100% - 32px); margin-inline: auto; }
 
