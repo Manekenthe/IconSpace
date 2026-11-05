@@ -57,7 +57,7 @@
     'August', 'September', 'October', 'November', 'December'];
 
   var BATCH = 120;
-  var state = { platform: 'ios', query: '', category: ALL, sort: 'latest' };
+  var state = { platform: 'ios', query: '', category: ALL, sort: 'latest', size: 'small' };
   var view = [];     // aktuálně vyfiltrované a seřazené
   var rendered = 0;
 
@@ -67,7 +67,9 @@
     search: $('search'), clear: $('searchClear'), searchWrap: $('searchWrap'),
     theme: $('themeSwitch'), headerRight: $('headerRight'),
     mobileFilters: $('mobileFilters'), toolbarRight: document.querySelector('.toolbar-right'),
-    overlay: $('overlay'), modal: $('modal'), modalClose: $('modalClose')
+    overlay: $('overlay'), modal: $('modal'), modalClose: $('modalClose'),
+    headerInner: document.querySelector('.header-inner'), nav: document.querySelector('.nav'),
+    sortLabel: document.querySelector('.sort-label')
   };
 
   function icon(name) { return ICONS[name] || ''; }
@@ -380,15 +382,55 @@
   }
   el.clear.addEventListener('click', clearSearch);
 
-  /* ---------------- Responsive layout (mobile: search + kategorie pod headerem) ---------------- */
+  /* ---------------- Přepínač velikosti karet ---------------- */
+  var sizeToggle = document.createElement('div');
+  sizeToggle.className = 'size-toggle';
+  sizeToggle.setAttribute('role', 'group');
+  sizeToggle.setAttribute('aria-label', 'Card size');
+  [['large', 'grid-big', 'Large cards'], ['small', 'grid-small', 'Small cards']].forEach(function (o) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn btn--icon';
+    b.dataset.size = o[0];
+    b.setAttribute('aria-label', o[2]);
+    b.title = o[2];
+    b.innerHTML = catIcon(o[1]);
+    b.addEventListener('click', function () { setSize(o[0], true); });
+    sizeToggle.appendChild(b);
+  });
+
+  function setSize(size, save) {
+    state.size = size === 'large' ? 'large' : 'small';
+    el.grid.classList.toggle('is-large', state.size === 'large');
+    Array.prototype.forEach.call(sizeToggle.children, function (b) {
+      b.setAttribute('aria-pressed', b.dataset.size === state.size ? 'true' : 'false');
+    });
+    if (save) { try { localStorage.setItem('dockapp-card-size', state.size); } catch (e) {} }
+  }
+
+  /* ---------------- Responsive layout ----------------
+     Desktop: [iOS][macOS][Search] ........ Sort by [Sort] [Kategorie] [Téma]   (sticky)
+              počet ikon ........................................ [velikost karet]
+     Mobil:   [iOS][macOS] ....... [Téma]
+              [Search] / [Kategorie]                                          (sticky)
+              počet ikon ... Sort by [Sort] [velikost karet] */
   var mq = window.matchMedia('(max-width: 719px)');
   function layout() {
+    var catDd = $('categoryDd'), sortRoot = $('sortDd');
     if (mq.matches) {
       el.mobileFilters.appendChild(el.searchWrap);
-      el.mobileFilters.appendChild($('categoryDd'));
+      el.mobileFilters.appendChild(catDd);
+      el.headerRight.appendChild(el.theme);
+      el.toolbarRight.appendChild(el.sortLabel);
+      el.toolbarRight.appendChild(sortRoot);
+      el.toolbarRight.appendChild(sizeToggle);
     } else {
-      el.headerRight.insertBefore(el.searchWrap, el.theme);
-      el.toolbarRight.appendChild($('categoryDd'));
+      el.headerInner.insertBefore(el.searchWrap, el.headerRight);
+      el.headerRight.appendChild(el.sortLabel);
+      el.headerRight.appendChild(sortRoot);
+      el.headerRight.appendChild(catDd);
+      el.headerRight.appendChild(el.theme);
+      el.toolbarRight.appendChild(sizeToggle);
     }
   }
   if (mq.addEventListener) mq.addEventListener('change', layout); else mq.addListener(layout);
@@ -579,6 +621,9 @@
   /* ---------------- Init ---------------- */
   applyTheme(document.documentElement.getAttribute('data-theme') || 'dark');
   layout();
+  var savedSize = null;
+  try { savedSize = localStorage.getItem('dockapp-card-size'); } catch (e) {}
+  setSize(savedSize, false);
   window.addEventListener('hashchange', function () {
     var h = location.hash.replace('#', '');
     if ((h === 'ios' || h === 'macos') && h !== state.platform) setPlatform(h, false);
