@@ -22,6 +22,7 @@
   --card-w: 86px;      /* pevná šířka karty (obrázek = šířka − 24 px) */
   --col-gap: 40px;     /* minimální mezera mezi sloupci; zbytek místa se rozdělí rovnoměrně */
   --row-gap: 40px;
+  --s: 1;              /* měřítko karet: 1 = malé (výchozí), větší = velké karty */
   color-scheme: dark;
 }
 :root[data-theme="light"] {
@@ -38,7 +39,7 @@
 
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
 body {
   margin: 0;
   min-height: 100vh;
@@ -67,7 +68,13 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 :focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 
 /* ---------- Header ---------- */
-.header { border-bottom: 1px solid var(--border); }
+.header {
+  position: sticky;      /* navigace zůstává při scrollu na místě */
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
 .header-inner {
   height: 65px;
   display: flex;
@@ -86,9 +93,12 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   transition: color .15s, background-color .15s, border-color .15s;
 }
 .btn:hover { color: var(--fg); }
-.btn[aria-current="page"] { color: var(--fg); background: var(--surface); border-color: var(--border); }
+.btn[aria-current="page"],
+.btn[aria-pressed="true"] { color: var(--fg); background: var(--surface); border-color: var(--border); }
+.btn--icon { width: var(--ctl); padding: 0; display: grid; place-items: center; }
 
-.header-right { display: flex; align-items: center; gap: 8px; }
+.header-right { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+.header-right .sort-label { color: var(--muted); margin-right: 0; }
 
 /* ---------- Search ---------- */
 .search { position: relative; width: 260px; }
@@ -133,6 +143,10 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 
 /* ---------- Toolbar ---------- */
 .mobile-filters {
+  position: sticky;      /* na mobilu zůstává pod hlavičkou i search a kategorie */
+  top: 66px;
+  z-index: 49;
+  background: var(--bg);
   display: none;
   flex-direction: column;
   gap: 8px;
@@ -143,7 +157,7 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 
 .toolbar {
   padding-top: 24px;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -151,8 +165,10 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 }
 .count { color: var(--muted); white-space: nowrap; }
 .count b { color: var(--fg); font-weight: 400; }
-.toolbar-right { display: flex; align-items: center; gap: 16px; }
-.toolbar-right .sort-label { color: var(--muted); margin-right: -8px; }
+.toolbar-right { display: flex; align-items: center; gap: 8px; }
+.toolbar-right .sort-label { color: var(--muted); }
+.size-toggle { display: flex; gap: 4px; }
+.toolbar-right .size-toggle { margin-left: 4px; }
 
 /* ---------- Dropdown ---------- */
 .dd { position: relative; }
@@ -224,23 +240,24 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 /* ---------- Grid + cards ---------- */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, var(--card-w));
+  grid-template-columns: repeat(auto-fill, calc(var(--card-w) * var(--s)));
   justify-content: space-between;
   column-gap: var(--col-gap);
   row-gap: var(--row-gap);
 }
+.grid.is-large { --s: 1.36; }   /* velké karty: poměrně zvětšené, drží poměr stran */
 .card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 11px;
+  gap: calc(8px * var(--s));
+  padding: calc(11px * var(--s));
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 24px;
+  border-radius: calc(24px * var(--s));
   color: var(--muted);
-  font-size: 12px;
-  line-height: 16px;
+  font-size: calc(12px * var(--s));
+  line-height: calc(16px * var(--s));
   font-weight: 500;
   text-align: center;
   transition: border-color .15s, color .15s;
@@ -255,12 +272,12 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border: 1px solid var(--border);   /* obrys, aby byla vidět i velmi tmavá / světlá ikona */
-  border-radius: 16px;
+  border-radius: calc(16px * var(--s));
   background: var(--surface);
 }
 .card .label {
   width: 100%;
-  min-height: 32px;
+  min-height: calc(32px * var(--s));
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -393,6 +410,9 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   .mobile-filters .dd--category { width: 100%; }
   .mobile-filters .dd--category .dd-list { left: 0; right: 0; }
   .toolbar { margin-bottom: 32px; }
+  html { scroll-padding-top: 190px; }
+  .grid.is-large { --s: 1.33; }
+  .header-right { gap: 8px; }
   .modal { padding: 32px 24px; }
   .modal-img { width: min(240px, 100%); height: auto; aspect-ratio: 1; }
 }
@@ -401,6 +421,8 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 @media (pointer: coarse), (hover: none), (max-width: 1024px) {
   .search-input { font-size: 16px; }
 }
+
+@media (max-width: 400px) { .toolbar-right .sort-label { display: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; }
