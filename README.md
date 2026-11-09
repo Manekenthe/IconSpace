@@ -33,8 +33,14 @@ assets/brand/         favicon, OG obrázek, manifest
 | date | `YYYY-MM`, např. `2026-10` |
 | website | např. `aave.com` |
 | appstore | celý odkaz do App Storu |
+| testflight | odkaz na TestFlight (jen pro aplikace, které ještě nejsou v App Storu) |
+| expires | do kdy platí TestFlight build, `YYYY-MM`, např. `2027-01` |
 | icon | cesta k PNG, např. `icons/ios/aave.png` |
 | featured | `yes` pro „Featured“, jinak prázdné |
+
+**TestFlight:** u beta aplikace nech `appstore` prázdné a vyplň `testflight` (a `expires`). Na ikoně se ukáže
+štítek „TestFlight“ a v detailu řádky „Release Date“, „Expires“ a „TestFlight“. Pokud jsou vyplněné oba odkazy,
+platí App Store (bez štítku). Až aplikace vyjde, doplň `appstore` a TestFlight můžeš smazat.
 
 Při chybě v řádku (špatný `platform`, neznámá kategorie…) web vypíše upozornění do konzole prohlížeče.
 
