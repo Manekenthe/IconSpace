@@ -16,6 +16,8 @@
   --muted: #a0a0a0;
   --fg: #ffffff;
   --hover: #1a1a1a;
+  --tag-bg: #252525;      /* štítek TestFlight */
+  --tag-fg: #ffffff;
   --modal-bg: #030303;
   --overlay: rgba(3, 3, 3, 0.8);
   --ctl: 34px;
@@ -32,6 +34,8 @@
   --muted: #71717a;
   --fg: #09090b;
   --hover: #f4f4f5;
+  --tag-bg: #e4e4e7;
+  --tag-fg: #09090b;
   --modal-bg: #ffffff;
   --overlay: rgba(244, 244, 245, 0.8);
   color-scheme: light;
@@ -275,6 +279,22 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   border-radius: calc(16px * var(--s));
   background: var(--surface);
 }
+.thumb { position: relative; display: block; width: 100%; }
+.tag-tf {
+  position: absolute;
+  left: 50%;
+  top: calc(100% - 8px * var(--s));      /* horní hrana 8 px nad spodkem ikony */
+  transform: translateX(-50%);
+  padding: calc(4px * var(--s)) calc(6px * var(--s));
+  background: var(--tag-bg);
+  color: var(--tag-fg);
+  border-radius: 9999px;
+  font-size: calc(10px * var(--s));
+  line-height: calc(12px * var(--s));
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+}
 .card .label {
   width: 100%;
   min-height: calc(32px * var(--s));
@@ -373,6 +393,7 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   gap: 16px;
   border-bottom: 1px solid var(--border);
 }
+.row[hidden] { display: none; }
 .row dt { flex: none; color: var(--muted); }
 .row dd {
   flex: 0 1 auto;
