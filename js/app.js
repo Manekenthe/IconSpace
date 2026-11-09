@@ -302,9 +302,18 @@
     var t = document.createElement('span');
     t.textContent = a.title;
     label.appendChild(t);
-    b.appendChild(img);
+    var thumb = document.createElement('span');
+    thumb.className = 'thumb';
+    thumb.appendChild(img);
+    if (a.beta) {
+      var tf = document.createElement('span');
+      tf.className = 'tag-tf';
+      tf.textContent = 'TestFlight';
+      thumb.appendChild(tf);
+    }
+    b.appendChild(thumb);
     b.appendChild(label);
-    b.setAttribute('aria-label', a.title);
+    b.setAttribute('aria-label', a.beta ? a.title + ' (TestFlight)' : a.title);
     return b;
   }
 
@@ -452,6 +461,21 @@
     $('mDeveloper').title = a.developer || '';
     $('mDate').textContent = fmtDate(a.date);
 
+    // TestFlight aplikace: „Release Date“, „Expires“ a řádek „TestFlight“ místo „App Store“
+    var rowDate = $('mDate').parentNode, rowStore = $('mStore').parentNode;
+    var rowExp = $('rowExpires');
+    if (!rowExp) {
+      rowExp = document.createElement('div');
+      rowExp.className = 'row';
+      rowExp.id = 'rowExpires';
+      rowExp.innerHTML = '<dt>Expires</dt><dd id="mExpires"></dd>';
+      rowDate.parentNode.insertBefore(rowExp, rowDate.nextSibling);
+    }
+    rowDate.firstElementChild.textContent = a.beta ? 'Release Date' : 'Date';
+    rowStore.firstElementChild.textContent = a.beta ? 'TestFlight' : 'App Store';
+    rowExp.hidden = !a.beta;
+    $('mExpires').textContent = a.beta ? fmtDate(a.expires) : '';
+
     var site = $('mWebsite');
     site.textContent = '';
     if (a.website) {
@@ -466,13 +490,13 @@
 
     var store = $('mStore');
     store.textContent = '';
-    if (a.appStore) {
+    if (a.appStore || a.testflight) {
       var s = document.createElement('a');
       s.className = 'store';
-      s.href = href(a.appStore);
+      s.href = href(a.appStore || a.testflight);
       s.target = '_blank';
       s.rel = 'noopener noreferrer';
-      s.setAttribute('aria-label', 'Open ' + a.title + ' in the App Store');
+      s.setAttribute('aria-label', 'Open ' + a.title + ' in ' + (a.appStore ? 'the App Store' : 'TestFlight'));
       s.innerHTML = icon('arrow-up-right');
       store.appendChild(s);
     } else store.textContent = '—';
@@ -559,7 +583,8 @@
     var ix = {
       platform: col('platform'), title: col('title'), category: col('category'),
       developer: col('developer'), date: col('date'), website: col('website'),
-      appstore: col('appstore'), icon: col('icon'), featured: col('featured')
+      appstore: col('appstore'), icon: col('icon'), featured: col('featured'),
+      testflight: col('testflight'), expires: col('expires')
     };
     var get = function (r, k) { return ix[k] >= 0 ? (r[ix[k]] || '').trim() : ''; };
     var seen = {}, out = [];
@@ -589,6 +614,9 @@
         date: normDate(get(r, 'date')),
         website: get(r, 'website'),
         appStore: get(r, 'appstore'),
+        testflight: get(r, 'testflight'),
+        expires: normDate(get(r, 'expires')),
+        beta: !get(r, 'appstore') && !!get(r, 'testflight'),   // jen TestFlight, bez App Store odkazu
         icon: get(r, 'icon'),
         featured: /^(1|yes|ano|true|x)$/i.test(get(r, 'featured'))
       });
