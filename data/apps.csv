@@ -1,7 +1,8 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires
+ios,Open,Health & Fitness,Open Inc.,2021-02,https://o-p-e-n.com,https://apps.apple.com/cz/app/open-breathwork-meditation/id1482725254,icons/ios/open-breathwork-meditation.webp,,,
 ios,Opal,Productivity,Opal OS,2020-12,https://opalapp.com,https://apps.apple.com/cz/app/opal-screen-time-control/id1497465230,icons/ios/opal-screen-time-control.webp,,,
-ios,TimeLoop: AI Day Planner,Productivity,PC7 d.o.o.,2026-10,https://trytimeloop.com,https://apps.apple.com/cz/app/timeloop-ai-day-planner/id6818954234,icons/ios/timeloop-ai-day-planner.webp,,,
-ios,Sundrop: Family Photos,Photo & Video,Dig Wells Inc,2026-10,https://trysundrop.app,https://apps.apple.com/cz/app/sundrop-family-photos/id6788060990,icons/ios/sundrop-family-photos.webp,,,
+ios,TimeLoop,Productivity,PC7 d.o.o.,2026-10,https://trytimeloop.com,https://apps.apple.com/cz/app/timeloop-ai-day-planner/id6818954234,icons/ios/timeloop-ai-day-planner.webp,,,
+ios,Sundrop,Photo & Video,Dig Wells Inc,2026-10,https://trysundrop.app,https://apps.apple.com/cz/app/sundrop-family-photos/id6788060990,icons/ios/sundrop-family-photos.webp,,,
 ios,Static Radio Podcast Discovery,Entertainment,Made With Best Practice LLC,2026-10,https://staticradio.app,https://apps.apple.com/cz/app/static-radio-podcast-discovery/id6779338117,icons/ios/static-radio-podcast-discovery.webp,,,
 ios,Daft Music,Music,Obrhoff Software Labs GmbH,2026-07,https://daftmusic.app,https://apps.apple.com/cz/app/daft-music-player-mixtapes/id6748985865,icons/ios/daft-music-player-mixtapes.webp,,,
 ios,On,Shopping,On AG,2023-05,https://www.on.com/,https://apps.apple.com/cz/app/on-shop-shoes-apparel/id6449706677,icons/ios/on-shop-shoes-apparel.webp,,,
