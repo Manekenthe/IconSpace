@@ -1,4 +1,5 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires
+ios,Orbit,Finance,Flooben Ltd.,2025-01,https://flooben.com/orbit,https://apps.apple.com/cz/app/subscription-tracker-orbit/id6692620188,icons/ios/subscription-manager-orbit.webp,,,
 ios,Ora,Utilities,Dan Eden,2025-02,https://ora.daneden.me,https://apps.apple.com/cz/app/ora-world-clock/id6502857758,icons/ios/ora-world-clock.webp,,,
 ios,OpenTable,Food & Drink,OpenTable Inc.,2008-11,https://www.opentable.co.uk/,https://apps.apple.com/cz/app/opentable-restaurant-bookings/id296581815,icons/ios/opentable.webp,,,
 ios,OpenSea,Finance,Ozone Networks Inc.,2021-09,https://opensea.io,https://apps.apple.com/cz/app/opensea-trade-crypto-nfts/id1582861796,icons/ios/opensea-trade-crypto-nfts.webp,,,
