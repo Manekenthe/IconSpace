@@ -1,4 +1,5 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires
+ios,Mapstory,Navigation,Aleksandra Szczurek,2026-11,,,icons/ios/mapstory-testflight.webp,,https://testflight.apple.com/join/76gGm6EQ,2027-02
 ios,Pocket Casts,News,Automattic,2011-01,https://pocketcasts.com,https://apps.apple.com/cz/app/pocket-casts-podcast-player/id414834813,icons/ios/pocket-casts-podcast-player.webp,,,
 ios,Platen,Productivity,Jerry Munyoka Nkongolo,2026-09,https://walnut-burst-160.notion.site/Platen-Support-3d63971e7add814fabd5e7ae0e6fa74a,https://apps.apple.com/cz/app/platen-paper-ink/id6809529696,icons/ios/platen-paper-ink.webp,,,
 ios,Placify,Lifestyle,Whitesspace SDN. BHD.,2025-01,https://placify.app,https://apps.apple.com/cz/app/placify-map-trip-planner/id6739698007,icons/ios/placify-map-trip-planner.webp,,,
