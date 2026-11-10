@@ -1,4 +1,5 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires
+ios,Liftr,Health & Fitness,Leon Van Der Linden,2026-11,https://liftr.nu/,,icons/ios/liftr.webp,,https://testflight.apple.com/join/bjhRGGG8,2027-02
 ios,Numbies,Health & Fitness,Light Nudge,2023-08,https://www.numbies.app,https://apps.apple.com/cz/app/numbies-work-out-with-friends/id6448198083,icons/ios/numbies-work-out-with-friends.webp,,,
 ios,Nouns,Entertainment,Secret Mission Software,2022-05,https://nounsapp.wtf,https://apps.apple.com/cz/app/nouns-explore-create-play/id1592583925,icons/ios/nouns-explore-create-play.webp,,,
 ios,Notion Calendar,Productivity,Notion Labs Incorporated,2024-01,https://www.notion.com/product/calendar,https://apps.apple.com/cz/app/notion-calendar/id1607562761,icons/ios/notion-calendar.webp,,,
