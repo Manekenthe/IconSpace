@@ -1,4 +1,5 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires
+ios,Polycam,Photo & Video,Polycam Inc.,2020-09,https://poly.cam,https://apps.apple.com/cz/app/polycam-3d-scanner-lidar-360/id1532482376,icons/ios/polycam-3d-scanner-modeling.webp,,,
 ios,Pokemon TCG Pocket,Card,The Pokemon Company,2024-10,https://tcgpocket.pokemon.com/,https://apps.apple.com/cz/app/pok%C3%A9mon-tcg-pocket/id6479970832,icons/ios/pokemon-tcg-pocket.webp,,,
 ios,PocketShelf,Books,Klemens Strasser,2025-09,https://pocketshelf.app,https://apps.apple.com/cz/app/pocketshelf-tbr-book-tracker/id6745476834,icons/ios/pocketshelf-tbr-book-tracker.webp,,,
 ios,Mapstory,Navigation,Aleksandra Szczurek,2026-11,,,icons/ios/mapstory-testflight.webp,,https://testflight.apple.com/join/76gGm6EQ,2027-02
