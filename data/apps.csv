@@ -1,4 +1,5 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires
+ios,Rooms,Casual,Things Inc.,2023-11,https://rooms.xyz,https://apps.apple.com/cz/app/rooms/id6443548715,icons/ios/rooms.webp,,,
 ios,Robin Hood Wallet,Finance,Robinhood Markets Inc.,2023-01,https://robinhood.com/,https://apps.apple.com/cz/app/robinhood-wallet-swap-crypto/id1634080733,icons/ios/robinhood-wallet-swap-crypto.webp,,,
 ios,Robin Hood Banking,Finance,Robinhood Markets Inc.,2024-07,https://robinhood.com/,https://apps.apple.com/us/app/robinhood-banking/id6462308655,icons/ios/robinhood-banking.webp,,,
 ios,Robin Hood,Finance,Robinhood Markets Inc.,2014-12,https://robinhood.com/,https://apps.apple.com/us/app/robinhood-trading-investing/id938003185,icons/ios/robinhood-trading-investing.webp,,,
