@@ -1,4 +1,5 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires
+ios,Slingshot,Social Networking,Wellnest Inc.,2023-08,https://slingshot.camera/,https://apps.apple.com/us/app/slingshot-instant-camera/id6455257577,icons/ios/slingshot-instant-camera.webp,,,
 ios,Sleep Cycle,Health & Fitness,Sleep Cycle AB,2009-07,https://sleepcycle.com,https://apps.apple.com/cz/app/sleep-cycle-tracker-sounds/id320606217,icons/ios/sleep-cycle-tracker-sounds.webp,,,
 ios,Slack,Business,Slack Technologies Inc.,2013-03,https://slack.com/,https://apps.apple.com/cz/app/slack/id618783545,icons/ios/slack.webp,,,
 ios,Skratch,Travel,Zero Dawn Ltd,2019-09,https://www.skratch.world,https://apps.apple.com/cz/app/skratch-travel-map-esim/id1457438876,icons/ios/skratch-travel-map-esim.webp,,,
