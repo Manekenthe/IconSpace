@@ -47,10 +47,10 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }   /*
 .cl-title { margin: 0; font-size: 14px; line-height: 20px; font-weight: 400; color: var(--fg); }
 
 .cl-icons {
-  --n: 5; --cw: 72px;                       /* počet sloupců a šířka buňky (ikona 40 px je uprostřed buňky) */
+  --n: 5; --cw: 56px;                       /* počet sloupců a šířka buňky (ikona 40 px je uprostřed buňky) */
   list-style: none; padding: 0;
   margin: 12px 0 0 calc((40px - var(--cw)) / 2);   /* první ikona zarovnaná s titulkem */
-  display: grid; grid-template-columns: repeat(var(--n), var(--cw)); gap: 16px 8px;
+  display: grid; grid-template-columns: repeat(var(--n), var(--cw)); gap: 16px 0;                 /* mezera mezi ikonami = šířka buňky − 40 px = 16 px */
 }
 .cl-app {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -64,12 +64,12 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }   /*
 .cl-app:hover img, .cl-app:focus-visible img { border-color: var(--muted); }
 .cl-name {
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2;
-  width: 100%; font-size: 10px; line-height: 12px; text-align: center;
+  width: 100%; padding: 0 2px; box-sizing: border-box; font-size: 10px; line-height: 12px; text-align: center;
   overflow: hidden; overflow-wrap: anywhere;
 }
 
 @media (max-width: 520px) {
   .cl { margin-top: 32px; }
-  .cl-icons { --n: 4; --cw: 56px; }
 }
+@media (max-width: 520px) { .cl-icons { --n: 4; } }
 @media (max-width: 360px) { .cl-icons { --n: 3; } }
