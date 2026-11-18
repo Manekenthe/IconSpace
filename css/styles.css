@@ -99,6 +99,16 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
 .btn:hover { color: var(--fg); }
 .btn[aria-current="page"],
 .btn[aria-pressed="true"] { color: var(--fg); background: var(--surface); border-color: var(--border); }
+/* odkaz na jinou stránku (Changelog): jen text, bez pozadí a podtržení */
+.nav-link {
+  display: inline-flex; align-items: center;
+  height: var(--ctl); padding: 0 16px;
+  color: var(--muted); text-decoration: none;
+  transition: color .15s;
+}
+.nav-link:hover,
+.nav-link[aria-current="page"] { color: var(--fg); }
+.nav-link:focus-visible { outline: 1px solid var(--muted); outline-offset: -2px; border-radius: 8px; }
 .btn--icon { width: var(--ctl); padding: 0; display: grid; place-items: center; }
 
 .header-right { display: flex; align-items: center; gap: 16px; margin-left: auto; }

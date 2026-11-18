@@ -1,5 +1,5 @@
 /* Changelog – časová osa. Používá tokeny ze styles.css */
-a.btn { display: inline-flex; align-items: center; text-decoration: none; }
+a.btn { display: inline-flex; align-items: center; text-decoration: none; }   /* iOS / macOS odkazy na stránce changelogu */
 
 .cl { width: min(520px, 100% - 32px); margin: 48px auto 96px; }
 .cl-label {
