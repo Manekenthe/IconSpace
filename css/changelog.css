@@ -1,0 +1,71 @@
+/* Changelog – časová osa. Používá tokeny ze styles.css */
+a.btn { display: inline-flex; align-items: center; text-decoration: none; }
+
+.cl { width: min(520px, 100% - 32px); margin: 48px auto 96px; }
+.cl-label {
+  margin: 0 0 32px;
+  font-size: 12px; line-height: 16px; font-weight: 400;
+  letter-spacing: .04em; text-transform: uppercase; color: var(--muted);
+}
+.cl-wrap { position: relative; padding-left: 0; }
+.cl-wrap::before {            /* svislá linka */
+  content: ""; position: absolute; left: 7px; top: 4px; bottom: 0; width: 1px;
+  background: var(--border);
+}
+.cl-empty { color: var(--muted); padding: 24px 0 0 32px; }
+
+.cl-year { margin: 0; }
+.cl-year + .cl-year { margin-top: 8px; }
+.cl-year-btn {
+  display: flex; align-items: center; gap: 6px;
+  margin: 0 0 20px 32px; padding: 0;
+  background: none; border: 0; color: var(--muted);
+  font: inherit; font-size: 12px; line-height: 16px; cursor: pointer;
+}
+.cl-year-btn:hover { color: var(--fg); }
+.cl-year-btn:focus-visible { outline: 1px solid var(--muted); outline-offset: 4px; border-radius: 4px; }
+.cl-year-btn svg { transition: transform .15s; }
+.cl-year-btn[aria-expanded="false"] svg { transform: rotate(-90deg); }
+.cl-list { list-style: none; margin: 0; padding: 0; }
+.cl-list[hidden] { display: none; }
+
+.cl-item {
+  position: relative;
+  display: grid; grid-template-columns: 56px minmax(0, 1fr); column-gap: 0;
+  margin: 0 0 32px; padding-left: 32px;
+}
+.cl-dot {
+  position: absolute; left: 3px; top: 4px;
+  width: 9px; height: 9px; box-sizing: border-box; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--border);
+}
+.cl-item.is-latest .cl-dot {
+  background: var(--fg); border-color: var(--fg);
+  box-shadow: 0 0 0 3px var(--bg);
+}
+.cl-date { font-size: 12px; line-height: 16px; color: var(--muted); padding-top: 2px; white-space: nowrap; }
+.cl-title { margin: 0; font-size: 14px; line-height: 20px; font-weight: 400; color: var(--fg); }
+
+.cl-icons {
+  list-style: none; margin: 12px 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px 8px;
+}
+.cl-app {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  min-width: 0; color: var(--muted); text-decoration: none; border-radius: 10px;
+}
+.cl-app:hover, .cl-app:focus-visible { color: var(--fg); outline: none; }
+.cl-app img {
+  display: block; width: 40px; height: 40px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--surface); object-fit: cover;
+}
+.cl-app:hover img, .cl-app:focus-visible img { border-color: var(--muted); }
+.cl-name {
+  display: block; max-width: 100%; font-size: 10px; line-height: 12px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .cl { margin-top: 32px; }
+  .cl-icons { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
