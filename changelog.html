@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Changelog – DockIcons</title>
+  <meta name="description" content="What's new on DockIcons: newly added iOS and macOS app icons.">
+  <meta name="theme-color" content="#030303">
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('dockapp-theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/changelog.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <nav class="nav" aria-label="Sections">
+        <a class="btn" href="index.html#ios">iOS</a>
+        <a class="btn" href="index.html#macos">macOS</a>
+        <a class="btn" href="changelog.html" aria-current="page">Changelog</a>
+      </nav>
+      <div class="header-right">
+        <button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="cl">
+    <h1 class="cl-label">Changelog</h1>
+    <div class="cl-wrap" id="timeline"></div>
+  </main>
+
+  <script src="js/icons.js"></script>
+  <script src="js/changelog.js"></script>
+</body>
+</html>
