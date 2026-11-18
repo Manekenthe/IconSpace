@@ -642,8 +642,11 @@
     DATA.counts = counts || {};
     byId = {};
     APPS.forEach(function (a) { byId[a.id] = a; });
-    var initial = (location.hash || '').replace('#', '') === 'macos' ? 'macos' : 'ios';
-    setPlatform(initial, false);
+    var hash = (location.hash || '').replace('#', '');
+    var deep = /^app\//.test(hash) ? byId[decodeURIComponent(hash.slice(4))] : null;   // odkaz z changelogu: #app/<id>
+    var initial = deep ? deep.platform : (hash === 'macos' ? 'macos' : 'ios');
+    setPlatform(initial, !!deep);
+    if (deep) openModal(deep);
   }
 
   /* ---------------- Init ---------------- */
