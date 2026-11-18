@@ -47,12 +47,14 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }   /*
 .cl-title { margin: 0; font-size: 14px; line-height: 20px; font-weight: 400; color: var(--fg); }
 
 .cl-icons {
-  list-style: none; margin: 12px 0 0; padding: 0;
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px 8px;
+  --n: 5; --cw: 72px;                       /* počet sloupců a šířka buňky (ikona 40 px je uprostřed buňky) */
+  list-style: none; padding: 0;
+  margin: 12px 0 0 calc((40px - var(--cw)) / 2);   /* první ikona zarovnaná s titulkem */
+  display: grid; grid-template-columns: repeat(var(--n), var(--cw)); gap: 16px 8px;
 }
 .cl-app {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
-  min-width: 0; color: var(--muted); text-decoration: none; border-radius: 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  width: var(--cw); color: var(--muted); text-decoration: none; border-radius: 10px;
 }
 .cl-app:hover, .cl-app:focus-visible { color: var(--fg); outline: none; }
 .cl-app img {
@@ -61,11 +63,13 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }   /*
 }
 .cl-app:hover img, .cl-app:focus-visible img { border-color: var(--muted); }
 .cl-name {
-  display: block; max-width: 100%; font-size: 10px; line-height: 12px;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2;
+  width: 100%; font-size: 10px; line-height: 12px; text-align: center;
+  overflow: hidden; overflow-wrap: anywhere;
 }
 
 @media (max-width: 520px) {
   .cl { margin-top: 32px; }
-  .cl-icons { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cl-icons { --n: 4; --cw: 56px; }
 }
+@media (max-width: 360px) { .cl-icons { --n: 3; } }
