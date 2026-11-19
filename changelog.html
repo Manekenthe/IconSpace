@@ -42,7 +42,23 @@
     <div class="cl-wrap" id="timeline"></div>
   </main>
 
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" type="button" aria-label="Close"></button>
+      <img class="modal-img" id="modalImg" alt="" width="240" height="240">
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <div class="tag" id="modalTag"></div>
+      <dl class="rows">
+        <div class="row"><dt>Developer</dt><dd id="mDeveloper"></dd></div>
+        <div class="row"><dt>Date</dt><dd id="mDate"></dd></div>
+        <div class="row"><dt>Website</dt><dd id="mWebsite"></dd></div>
+        <div class="row"><dt>App Store</dt><dd id="mStore"></dd></div>
+      </dl>
+    </div>
+  </div>
+
   <script src="js/icons.js"></script>
+  <script src="js/modal.js"></script>
   <script src="js/changelog.js"></script>
 </body>
 </html>
