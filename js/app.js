@@ -47,8 +47,9 @@
   setCategories(DEFAULT_CATEGORIES);
 
   var SORTS = [
+    ['added', 'Recently added'],
+    ['latest', 'Release date'],
     ['featured', 'Featured'],
-    ['latest', 'Latest'],
     ['az', 'Name (A → Z)'],
     ['za', 'Name (Z → A)']
   ];
@@ -57,7 +58,7 @@
     'August', 'September', 'October', 'November', 'December'];
 
   var BATCH = 120;
-  var state = { platform: 'ios', query: '', category: ALL, sort: 'latest', size: 'small' };
+  var state = { platform: 'ios', query: '', category: ALL, sort: 'added', size: 'small' };
   var view = [];     // aktuálně vyfiltrované a seřazené
   var rendered = 0;
 
@@ -266,6 +267,11 @@
     var byLatest = function (a, b) {
       return a.date < b.date ? 1 : a.date > b.date ? -1 : b.idx - a.idx; // novější řádek v CSV = novější
     };
+    // „Recently added“: podle sloupce added; aplikace bez data jdou na konec (mezi sebou podle data vydání)
+    var byAdded = function (a, b) {
+      if (a.added !== b.added) return !a.added ? 1 : !b.added ? -1 : a.added < b.added ? 1 : -1;
+      return a.added ? b.idx - a.idx : byLatest(a, b);
+    };
     var byName = function (a, b) {
       return a.title.localeCompare(b.title, 'en', { sensitivity: 'base', numeric: true });
     };
@@ -273,7 +279,8 @@
     else if (state.sort === 'za') list.sort(function (a, b) { return byName(b, a); });
     else if (state.sort === 'featured') {
       list.sort(function (a, b) { return (b.featured - a.featured) || byLatest(a, b); });
-    } else list.sort(byLatest);
+    } else if (state.sort === 'latest') list.sort(byLatest);
+    else list.sort(byAdded);
     return list;
   }
 
@@ -445,92 +452,21 @@
   if (mq.addEventListener) mq.addEventListener('change', layout); else mq.addListener(layout);
 
   /* ---------------- Modal ---------------- */
-  var lastFocus = null;
-  el.modalClose.innerHTML = icon('close');
-
+  // Detail aplikace je ve sdíleném js/modal.js (používá ho i changelog). Načte se samo, pokud ho index.html neobsahuje.
+  var modalQueue = [];
+  function withModal(fn) { if (window.DockModal) fn(); else modalQueue.push(fn); }
+  if (!window.DockModal) {
+    var ms = document.createElement('script');
+    ms.src = 'js/modal.js';
+    ms.onload = function () { modalQueue.splice(0).forEach(function (f) { f(); }); };
+    document.body.appendChild(ms);
+  }
   function openModal(a) {
-    lastFocus = document.activeElement;
-    var img = $('modalImg');
-    img.src = a.icon;
-    img.alt = a.title + ' icon';
-    $('modalTitle').textContent = a.title;
-    var tag = $('modalTag');
-    tag.innerHTML = catIcon(CAT_ICON[a.category] || 'grid') + '<span></span>';
-    tag.lastChild.textContent = a.category;
-    $('mDeveloper').textContent = a.developer || '—';
-    $('mDeveloper').title = a.developer || '';
-    $('mDate').textContent = fmtDate(a.date);
-
-    // TestFlight aplikace: „Release Date“, „Expires“ a řádek „TestFlight“ místo „App Store“
-    var rowDate = $('mDate').parentNode, rowStore = $('mStore').parentNode;
-    var rowExp = $('rowExpires');
-    if (!rowExp) {
-      rowExp = document.createElement('div');
-      rowExp.className = 'row';
-      rowExp.id = 'rowExpires';
-      rowExp.innerHTML = '<dt>Expires</dt><dd id="mExpires"></dd>';
-      rowDate.parentNode.insertBefore(rowExp, rowDate.nextSibling);
-    }
-    rowDate.firstElementChild.textContent = a.beta ? 'Release Date' : 'Date';
-    rowStore.firstElementChild.textContent = a.beta ? 'TestFlight' : 'App Store';
-    rowExp.hidden = !a.beta;
-    $('mExpires').textContent = a.beta ? fmtDate(a.expires) : '';
-
-    var site = $('mWebsite');
-    site.textContent = '';
-    if (a.website) {
-      var link = document.createElement('a');
-      link.href = href(a.website);
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.textContent = a.website.replace(/^https?:\/\//i, '').replace(/\/$/, '');
-      link.title = link.href;
-      site.appendChild(link);
-    } else site.textContent = '—';
-
-    var store = $('mStore');
-    store.textContent = '';
-    if (a.appStore || a.testflight) {
-      var s = document.createElement('a');
-      s.className = 'store';
-      s.href = href(a.appStore || a.testflight);
-      s.target = '_blank';
-      s.rel = 'noopener noreferrer';
-      s.setAttribute('aria-label', 'Open ' + a.title + ' in ' + (a.appStore ? 'the App Store' : 'TestFlight'));
-      s.innerHTML = icon('arrow-up-right');
-      store.appendChild(s);
-    } else store.textContent = '—';
-
-    el.overlay.classList.add('is-open');
-    el.overlay.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('is-locked');
-    el.modalClose.focus();
+    withModal(function () { DockModal.open(a, CAT_ICON[a.category] || 'grid'); });
   }
-
-  function closeModal() {
-    if (!el.overlay.classList.contains('is-open')) return;
-    el.overlay.classList.remove('is-open');
-    el.overlay.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('is-locked');
-    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
-  }
-
   el.grid.addEventListener('click', function (e) {
     var card = e.target.closest('.card');
     if (card && byId[card.dataset.id]) openModal(byId[card.dataset.id]);
-  });
-  el.overlay.addEventListener('mousedown', function (e) { if (e.target === el.overlay) closeModal(); });
-  el.modalClose.addEventListener('click', closeModal);
-  document.addEventListener('keydown', function (e) {
-    if (!el.overlay.classList.contains('is-open')) return;
-    if (e.key === 'Escape') { e.preventDefault(); closeModal(); }
-    else if (e.key === 'Tab') { // jednoduchý focus trap
-      var f = el.modal.querySelectorAll('a[href], button');
-      if (!f.length) return;
-      var first = f[0], last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    }
   });
 
   /* ---------------- Načtení dat z data/apps.csv ---------------- */
@@ -574,6 +510,17 @@
     return v;
   }
 
+  // YYYY-MM-DD, D.M.YYYY, D. M. YYYY, D/M/YYYY → YYYY-MM-DD (jinak '')
+  function normDay(v) {
+    v = (v || '').trim();
+    var pad = function (n) { return ('0' + n).slice(-2); };
+    var m = /^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/.exec(v);
+    if (m) return m[1] + '-' + pad(m[2]) + '-' + pad(m[3]);
+    m = /^(\d{1,2})\s*[.\/]\s*(\d{1,2})\s*[.\/]\s*(\d{4})/.exec(v);
+    if (m) return m[3] + '-' + pad(m[2]) + '-' + pad(m[1]);
+    return '';
+  }
+
   function slug(s) { return norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'app'; }
 
   function buildApps(rows) {
@@ -584,7 +531,7 @@
       platform: col('platform'), title: col('title'), category: col('category'),
       developer: col('developer'), date: col('date'), website: col('website'),
       appstore: col('appstore'), icon: col('icon'), featured: col('featured'),
-      testflight: col('testflight'), expires: col('expires')
+      testflight: col('testflight'), expires: col('expires'), added: col('added')
     };
     var get = function (r, k) { return ix[k] >= 0 ? (r[ix[k]] || '').trim() : ''; };
     var seen = {}, out = [];
@@ -616,6 +563,7 @@
         appStore: get(r, 'appstore'),
         testflight: get(r, 'testflight'),
         expires: normDate(get(r, 'expires')),
+        added: normDay(get(r, 'added')),
         beta: !get(r, 'appstore') && !!get(r, 'testflight'),   // jen TestFlight, bez App Store odkazu
         icon: get(r, 'icon'),
         featured: /^(1|yes|ano|true|x)$/i.test(get(r, 'featured'))

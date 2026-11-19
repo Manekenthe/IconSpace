@@ -53,6 +53,15 @@
     if (m) return m[3] + '-' + pad(m[2]) + '-' + pad(m[1]);
     return '';
   }
+  // YYYY-MM (stejně jako v app.js)
+  function normMonth(v) {
+    v = (v || '').trim();
+    var m = /^(\d{4})[-\/.](\d{1,2})/.exec(v);
+    if (m) return m[1] + '-' + pad(m[2]);
+    m = /^(\d{1,2})[\/.](\d{4})$/.exec(v);
+    if (m) return m[2] + '-' + pad(m[1]);
+    return v;
+  }
   function table(rows) {
     var head = (rows[0] || []).map(function (h) { return h.trim().toLowerCase(); });
     return rows.slice(1).map(function (r) {
@@ -68,6 +77,8 @@
     });
   }
 
+  var CAT = {};   // 'kategorie' (malými písmeny) → [název, ikona] z data/categories.csv
+
   function build(appsText, logText) {
     var days = {};     // 'YYYY-MM-DD' → { title, apps: [] }
     var day = function (d) { return days[d] || (days[d] = { title: '', apps: [] }); };
@@ -81,7 +92,11 @@
       var id = seen[base] === 1 ? base : base + '-' + seen[base];
       var d = normDay(a.added);
       if (!d) return;
-      day(d).apps.push({ id: id, title: a.title, icon: a.icon });
+      day(d).apps.push({
+        id: id, title: a.title, icon: a.icon, category: a.category, developer: a.developer,
+        date: normMonth(a.date), website: a.website, appStore: a.appstore, testflight: a.testflight,
+        expires: normMonth(a.expires), beta: !a.appstore && !!a.testflight
+      });
     });
     if (logText) table(parseCSV(logText)).forEach(function (r) {
       var d = normDay(r.date);
@@ -150,8 +165,18 @@
           e.apps.forEach(function (a) {
             var item = el('li');
             var link = el('a', 'cl-app');
-            link.href = 'index.html#app/' + encodeURIComponent(a.id);
+            link.href = 'index.html#app/' + encodeURIComponent(a.id);   // záloha (nový panel, bez JS)
             link.title = a.title;
+            link.addEventListener('click', function (ev) {
+              if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || ev.button !== 0 || !window.DockModal) return;
+              ev.preventDefault();
+              var c = CAT[(a.category || '').toLowerCase()];
+              DockModal.open({
+                title: a.title, icon: a.icon, category: c ? c[0] : a.category, developer: a.developer,
+                date: a.date, website: a.website, appStore: a.appStore, testflight: a.testflight,
+                expires: a.expires, beta: a.beta
+              }, c ? c[1] : 'grid');
+            });
             var img = document.createElement('img');
             img.src = a.icon; img.alt = ''; img.width = 40; img.height = 40; img.loading = 'lazy';
             img.addEventListener('error', function () { img.removeAttribute('src'); });
@@ -173,8 +198,10 @@
 
   Promise.all([
     fetchText('data/apps.csv'),
-    fetchText('data/changelog.csv').catch(function () { return ''; })
+    fetchText('data/changelog.csv').catch(function () { return ''; }),
+    fetchText('data/categories.csv').catch(function () { return ''; })
   ]).then(function (res) {
+    table(parseCSV(res[2])).forEach(function (r) { if (r.name) CAT[r.name.toLowerCase()] = [r.name, r.icon || 'grid']; });
     render(build(res[0], res[1]));
   }).catch(function (err) {
     console.error(err);
