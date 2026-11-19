@@ -267,10 +267,10 @@
     var byLatest = function (a, b) {
       return a.date < b.date ? 1 : a.date > b.date ? -1 : b.idx - a.idx; // novější řádek v CSV = novější
     };
-    // „Recently added“: podle sloupce added; aplikace bez data jdou na konec (mezi sebou podle data vydání)
+    // „Recently added“: podle sloupce added (nejnovější den první, uvnitř dne pořadí z CSV); aplikace bez data jdou na konec (mezi sebou podle data vydání)
     var byAdded = function (a, b) {
       if (a.added !== b.added) return !a.added ? 1 : !b.added ? -1 : a.added < b.added ? 1 : -1;
-      return a.added ? b.idx - a.idx : byLatest(a, b);
+      return a.added ? a.idx - b.idx : byLatest(a, b);   // stejný den: pořadí řádků v CSV shora dolů (jako v changelogu)
     };
     var byName = function (a, b) {
       return a.title.localeCompare(b.title, 'en', { sensitivity: 'base', numeric: true });
