@@ -306,7 +306,8 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   pointer-events: none;
 }
 .card .label {
-  width: 100%;
+  width: calc(100% + 16px * var(--s));        /* popisek smí zasahovat do vnitřního odsazení karty, ať se delší slova nelámou */
+  margin-inline: calc(-8px * var(--s));
   min-height: calc(32px * var(--s));
   display: flex;
   align-items: flex-end;
@@ -443,6 +444,7 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   .toolbar { margin-bottom: 32px; }
   html { scroll-padding-top: 190px; }
   .grid.is-large { --s: 1.33; }
+  .card .label { font-size: calc(11px * var(--s)); }   /* úzké karty na mobilu */
   .header-right { gap: 8px; }
   .modal { padding: 32px 24px; }
   .modal-img { width: min(240px, 100%); height: auto; aspect-ratio: 1; }
