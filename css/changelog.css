@@ -67,7 +67,7 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }   /*
 .cl-name {
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2;
   width: 100%; font-size: 10px; line-height: 12px; text-align: center;
-  overflow: hidden; overflow-wrap: anywhere;
+  overflow: hidden; overflow-wrap: normal; text-overflow: ellipsis;
 }
 
 @media (max-width: 520px) {

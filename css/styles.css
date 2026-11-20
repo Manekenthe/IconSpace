@@ -319,7 +319,8 @@ svg { width: 16px; height: 16px; flex: none; display: block; }
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;      /* slova se nelámou uprostřed… */
+  text-overflow: ellipsis;    /* …a když se slovo do popisku nevejde, zkrátí se na „Superwhi…“ */
 }
 .empty { padding: 80px 0; text-align: center; color: var(--muted); }
 .empty[hidden] { display: none; }
