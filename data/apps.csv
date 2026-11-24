@@ -1,4 +1,5 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires,added
+ios,Telegram,Social Networking,Telegram FZ-LLC,2013-08,https://telegram.org,https://apps.apple.com/cz/app/telegram-messenger/id686449807,icons/ios/telegram-messenger.webp,,,,2026-11-24
 macos,Frame,Photo & Video,Marek Jóźwiak,2026-05,https://framegui.app,,icons/macos/frame.webp,,,,2026-11-22
 macos,Nameshot,Utilities,Shapes and Stories LLC,2024-11,https://nameshot.app/,https://apps.apple.com/cz/app/nameshot/id6821602866?mt=12,icons/macos/nameshot.webp,,,,2026-11-21
 ios,Tapotron,Casual,Great Scott AB,2025-04,https://tapotron.com,https://apps.apple.com/cz/app/tapotron-tap-games-beats/id6738282470,icons/ios/tapotron-tap-games-beats.webp,,,,2026-11-20
