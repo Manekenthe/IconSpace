@@ -1,4 +1,5 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires,added
+ios,Tripsy,Travel,Tripsy LLC.,2018-10,https://tripsy.app,https://apps.apple.com/cz/app/tripsy-travel-planner/id1429967544,icons/iostripsy-travel-planner.webp,,,,2026-11-25
 ios,Transit,Navigation,Transit App Inc.,2012-06,https://transitapp.com,https://apps.apple.com/cz/app/transit-live-transport-times/id498151501,icons/ios/transit-subway-bus-times.webp,,,,2026-11-25
 ios,Train of Thought,Productivity,David Banziger,2026-10,https://trainofthought.site,https://apps.apple.com/cz/app/train-of-thought-focus-app/id6796890798,icons/ios/train-of-thought-focus-app.webp,,,,2026-11-25
 ios,Trackables,Health & Fitness,Mental LLC,2026-03,https://trackables.app,https://apps.apple.com/cz/app/trackables-health-dashboard/id6745567488,icons/ios/trackables-health-dashboard.webp,,,,2026-11-25
