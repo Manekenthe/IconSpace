@@ -1,4 +1,5 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires,added
+ios,!Weather,Weather,Not Boring Software LLC,2020-10,https://notbor.ing/product/weather,https://apps.apple.com/cz/app/not-boring-weather/id1531063436,icons/ios/not-boring-weather.webp,,,,2026-11-27
 ios,Waymo,Travel,Waymo LLC,2019-12,https://waymo.com/,https://apps.apple.com/us/app/waymo/id1343524838,icons/ios/waymo.webp,,,,2026-11-27
 ios,Wander,Travel,Wander.com Inc.,2021-11,https://www.wander.com,https://apps.apple.com/cz/app/wa-nder/id1582777762,icons/ios/wa-nder.webp,,,,2026-11-26
 ios,Wabi,Lifestyle,Wabi Inc.,2026-01,https://wabi.ai,https://apps.apple.com/cz/app/wabi-ai-assistant-for-anyone/id6747768928,icons/ios/wabi-ai-assistant-for-anyone.webp,,,,2026-11-26
