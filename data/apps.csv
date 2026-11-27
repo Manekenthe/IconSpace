@@ -1,4 +1,5 @@
 platform,title,category,developer,date,website,appstore,icon,featured,testflight,expires,added
+ios,WSJ,News,Dow Jones & Company Inc.,2010-04,https://www.wsj.com,https://apps.apple.com/cz/app/the-wall-street-journal/id364387007,icons/ios/the-wall-street-journal.webp,,,,2026-11-27
 ios,Wise,Finance,Wise Payments Ltd.,2013-03,https://wise.com,https://apps.apple.com/cz/app/wise-global-money/id612261027,icons/ios/wise-global-money-transfer.webp,,,,2026-11-27
 ios,What's going on?,Lifestyle,Fabian Gruss,2020-10,https://goingonapp.app,https://apps.apple.com/cz/app/whats-going-on-friend-diary/id6471529194,icons/ios/what-s-going-on-friend-diary.webp,,,,2026-11-27
 ios,!Weather,Weather,Not Boring Software LLC,2024-06,https://notbor.ing/product/weather,https://apps.apple.com/cz/app/not-boring-weather/id1531063436,icons/ios/not-boring-weather.webp,,,,2026-11-27
